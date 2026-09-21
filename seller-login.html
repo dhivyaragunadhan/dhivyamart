@@ -1,0 +1,167 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DhivyaMart - Seller Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f1ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            width: 380px;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #ccc;
+        }
+
+        h1 {
+            text-align: center;
+            color: #6c3cff;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background: #6c3cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5630cc;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c3cff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>DhivyaMart</h1>
+    <h2>Seller Login</h2>
+
+    <form onsubmit="sellerLogin(event)">
+
+        <label>Email</label>
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter seller email"
+            required
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button type="submit">
+            Login as Seller
+        </button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <a class="back" href="/">
+        Back to Main Login
+    </a>
+
+</div>
+
+<script>
+
+async function sellerLogin(event) {
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("email").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const params = new URLSearchParams();
+
+    params.append("email", email);
+    params.append("password", password);
+    params.append("role", "SELLER");
+
+    const response = await fetch(
+        "/login?" + params.toString()
+    );
+
+    if (response.redirected) {
+
+        window.location.href =
+            response.url;
+
+        return;
+    }
+
+    document.getElementById("message").innerText =
+        "Invalid seller email or password.";
+
+}
+
+</script>
+
+</body>
+</html>
+```

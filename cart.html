@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DhivyaMart - Cart</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f1ff;
+            padding: 30px;
+        }
+
+        .box {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #ccc;
+        }
+
+        h1 {
+            color: #6c3cff;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background: #6c3cff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        #message {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .checkout {
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>DhivyaMart</h1>
+    <h2>My Cart</h2>
+
+    <div id="cartList"></div>
+
+    <p class="total">
+        Total: ₹<span id="total">0</span>
+    </p>
+
+    <button class="checkout" onclick="goToCheckout()">
+        Proceed to Checkout
+    </button>
+
+    <p id="message"></p>
+
+    <br>
+
+    <a href="/products.html">Continue Shopping</a>
+
+</div>
+
+<script>
+
+async function loadCart() {
+
+    const response = await fetch("/cart/items");
+
+    if (!response.ok) {
+        document.getElementById("cartList").innerHTML =
+            "<p>Please login first.</p>";
+        return;
+    }
+
+    const items = await response.json();
+
+    const list = document.getElementById("cartList");
+
+    list.innerHTML = "";
+
+    if (items.length === 0) {
+
+        list.innerHTML =
+            "<p>Your cart is empty.</p>";
+
+        document.getElementById("total").innerText = "0";
+
+        return;
+    }
+
+    const productResponse =
+        await fetch("/products/all");
+
+    const products =
+        await productResponse.json();
+
+    for (const item of items) {
+
+        const product =
+            products.find(p => p.id === item.productId);
+
+        if (product) {
+
+            list.innerHTML += `
+                <div class="item">
+
+                    <h3>${product.name}</h3>
+
+                    <p>${product.description}</p>
+
+                    <p>Price: ₹${product.price}</p>
+
+                    <p>
+                        Quantity:
+                        <input
+                            type="number"
+                            id="qty-${item.id}"
+                            value="${item.quantity}"
+                            min="1"
+                            style="width:60px;">
+                    </p>
+
+                    <button onclick="updateItem(${item.id})">
+                        Update
+                    </button>
+
+                    <button onclick="removeItem(${item.id})">
+                        Remove
+                    </button>
+
+                </div>
+            `;
+        }
+    }
+
+    loadTotal();
+}
+
+
+async function updateItem(id) {
+
+    const quantity =
+        document.getElementById("qty-" + id).value;
+
+    const data = new URLSearchParams();
+
+    data.append("quantity", quantity);
+
+    const response = await fetch("/cart/" + id, {
+        method: "PUT",
+        body: data
+    });
+
+    if (response.ok) {
+
+        document.getElementById("message").innerText =
+            "Cart updated successfully!";
+
+        loadCart();
+    }
+}
+
+
+async function removeItem(id) {
+
+    const response = await fetch("/cart/" + id, {
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+
+        document.getElementById("message").innerText =
+            "Item removed from cart!";
+
+        loadCart();
+    }
+}
+
+
+async function loadTotal() {
+
+    const response = await fetch("/cart/total");
+
+    const total = await response.json();
+
+    document.getElementById("total").innerText =
+        total.toFixed(2);
+}
+
+
+function goToCheckout() {
+
+    window.location.href = "/checkout.html";
+}
+
+
+loadCart();
+
+</script>
+
+</body>
+</html>

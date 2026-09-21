@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DhivyaMart - Checkout</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f1ff;
+            padding: 30px;
+        }
+
+        .box {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #ccc;
+            text-align: center;
+        }
+
+        h1 {
+            color: #6c3cff;
+        }
+
+        .total {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #6c3cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>DhivyaMart</h1>
+
+    <h2>Checkout</h2>
+
+    <p>Confirm your order and payment.</p>
+
+    <p class="total">
+        Total: ₹<span id="total">0</span>
+    </p>
+
+    <button onclick="placeOrder()">
+        Confirm Payment & Place Order
+    </button>
+
+    <p id="message"></p>
+
+    <br>
+
+    <a href="/cart">Back to Cart</a>
+
+</div>
+
+<script>
+
+async function loadTotal() {
+
+    const response = await fetch("/cart/total");
+
+    const total = await response.json();
+
+    document.getElementById("total").innerText =
+        total.toFixed(2);
+}
+
+
+async function placeOrder() {
+
+    const response = await fetch("/checkout", {
+        method: "POST"
+    });
+
+    if (!response.ok) {
+
+        document.getElementById("message").innerText =
+            "Checkout failed.";
+
+        return;
+    }
+
+    const order = await response.json();
+
+    document.getElementById("message").innerText =
+        "Payment successful! Order placed successfully. Order ID: "
+        + order.id;
+}
+
+
+loadTotal();
+
+</script>
+
+</body>
+</html>

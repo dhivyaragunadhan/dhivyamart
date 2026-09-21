@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DhivyaMart - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f7f5ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 650px;
+            background: white;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        /* LEFT SIDE */
+
+        .login-section {
+            width: 52%;
+            padding: 55px 70px;
+            background: #ffffff;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #5b35b5;
+            margin-bottom: 55px;
+        }
+
+        .logo span {
+            color: #222;
+        }
+
+        h1 {
+            font-size: 38px;
+            color: #171717;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d8d8d8;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 22px;
+            outline: none;
+        }
+
+        .input-box:focus {
+            border-color: #6942c2;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .forgot {
+            color: #5b35b5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .role-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .role-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .role-container label {
+            flex: 1;
+            margin: 0;
+        }
+
+        .role-container input {
+            display: none;
+        }
+
+        .role {
+            display: block;
+            text-align: center;
+            padding: 13px;
+            border: 1px solid #d5d5d5;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #555;
+            font-weight: normal;
+        }
+
+        .role-container input:checked + .role {
+            background: #6840c4;
+            color: white;
+            border-color: #6840c4;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #6840c4;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: #5632a9;
+        }
+
+        .create-account {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+        }
+
+        .create-account a {
+            color: #5b35b5;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* RIGHT SIDE */
+
+        .design-section {
+            width: 48%;
+            background: linear-gradient(135deg, #b59bea, #7450c8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle2 {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            bottom: -100px;
+            left: -80px;
+        }
+
+        .illustration {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .monitor {
+            width: 300px;
+            height: 220px;
+            border: 10px solid #222;
+            border-radius: 15px;
+            background: #eee;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 75px;
+        }
+
+        .person {
+            font-size: 80px;
+        }
+
+        .illustration h2 {
+            font-size: 30px;
+            margin-top: 20px;
+        }
+
+        .illustration p {
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 800px) {
+            .container {
+                width: 95%;
+            }
+
+            .design-section {
+                display: none;
+            }
+
+            .login-section {
+                width: 100%;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT LOGIN SECTION -->
+
+    <div class="login-section">
+
+        <div class="logo">
+            🛒 <span>Dhivya</span>Mart
+        </div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Please enter your details
+        </p>
+
+        <form action="/login" method="get">
+
+            <label>Email address</label>
+
+            <input
+                class="input-box"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                class="input-box"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <div class="options">
+
+                <label class="remember">
+                    <input type="checkbox">
+                    Remember for 30 days
+                </label>
+
+                <a class="forgot" href="/forgot-password.html">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <div class="role-title">
+                Login As
+            </div>
+
+            <div class="role-container">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="role"
+                        value="BUYER"
+                        checked
+                    >
+                    <span class="role">👤 Buyer</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="role"
+                        value="SELLER"
+                    >
+                    <span class="role">👤 Seller</span>
+                </label>
+
+            </div>
+
+            <button class="login-button" type="submit">
+                Login →
+            </button>
+
+        </form>
+
+        <div class="create-account">
+            Don't have an account?
+            <a href="/register">Create Account</a>
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT DESIGN SECTION -->
+
+    <div class="design-section">
+
+        <div class="circle"></div>
+        <div class="circle2"></div>
+
+        <div class="illustration">
+
+            <div class="monitor">
+                🛍️
+            </div>
+
+            <div class="person">
+                👩
+            </div>
+
+            <h2>Shop • Sell • Grow</h2>
+
+            <p>
+                Welcome to DhivyaMart
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

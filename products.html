@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DhivyaMart - Mobile & Accessories</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin-bottom: 0;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .search-box input,
+        .search-box select {
+            width: 280px;
+            max-width: 90%;
+            padding: 12px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        #productList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            padding: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card h3 {
+            font-size: 18px;
+            margin: 12px 0 5px;
+        }
+
+        .product-card p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .price {
+            color: #16a34a;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .cart-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .cart-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .bottom {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .bottom a {
+            margin: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .no-products {
+            text-align: center;
+            grid-column: 1 / -1;
+            font-size: 20px;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📱 DhivyaMart</h1>
+    <p>Mobile & Accessories</p>
+</header>
+
+
+<div class="search-box">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search mobile, brand, product..."
+        onkeyup="filterProducts()"
+    >
+
+    <select
+        id="priceFilter"
+        onchange="filterProducts()"
+    >
+        <option value="all">All Prices</option>
+        <option value="under1000">Under ₹1000</option>
+        <option value="1000plus">₹1000 and above</option>
+    </select>
+
+</div>
+
+
+<div id="productList"></div>
+
+
+<div class="bottom">
+    <a href="/">🏠 Home</a>
+    <a href="/cart">🛒 Cart</a>
+</div>
+
+
+<script>
+
+const products = [
+
+    {
+        name: "Samsung Galaxy A55",
+        description: "Samsung Smartphone",
+        price: 39999,
+        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
+    },
+
+    {
+        name: "iPhone 16",
+        description: "Apple Smartphone",
+        price: 69999,
+        image: "https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600"
+    },
+
+    {
+        name: "OnePlus Nord CE",
+        description: "OnePlus Smartphone",
+        price: 24999,
+        image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600"
+    },
+
+    {
+        name: "Redmi Note 14 Pro",
+        description: "Redmi Smartphone",
+        price: 22999,
+        image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600"
+    },
+
+    {
+        name: "Realme Narzo",
+        description: "Realme Smartphone",
+        price: 16999,
+        image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600"
+    },
+
+    {
+        name: "Vivo V40",
+        description: "Vivo Smartphone",
+        price: 34999,
+        image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600"
+    },
+
+    {
+        name: "boAt Wireless Earbuds",
+        description: "Bluetooth Earbuds",
+        price: 1499,
+        image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600"
+    },
+
+    {
+        name: "Realme Buds",
+        description: "Wireless Earbuds",
+        price: 1999,
+        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600"
+    },
+
+    {
+        name: "JBL Bluetooth Speaker",
+        description: "Portable Bluetooth Speaker",
+        price: 2999,
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600"
+    },
+
+    {
+        name: "boAt Bluetooth Speaker",
+        description: "Wireless Speaker",
+        price: 1999,
+        image: "https://images.unsplash.com/photo-1589003077984-894e133dabab?w=600"
+    },
+
+    {
+        name: "Noise Smart Watch",
+        description: "Smart Watch",
+        price: 2999,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"
+    },
+
+    {
+        name: "Fire-Boltt Smart Watch",
+        description: "Fitness Smart Watch",
+        price: 2499,
+        image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600"
+    },
+
+    {
+        name: "MI Power Bank",
+        description: "10000mAh Power Bank",
+        price: 1299,
+        image: "https://images.unsplash.com/photo-1609592424208-9d6e4c3f5c7c?w=600"
+    },
+
+    {
+        name: "Portronics Power Bank",
+        description: "20000mAh Power Bank",
+        price: 1799,
+        image: "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=600"
+    },
+
+    {
+        name: "Samsung 25W Charger",
+        description: "Fast Charging Adapter",
+        price: 899,
+        image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600"
+    },
+
+    {
+        name: "Apple 20W Charger",
+        description: "USB-C Fast Charger",
+        price: 1999,
+        image: "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=600"
+    },
+
+    {
+        name: "OnePlus 80W Charger",
+        description: "Super Fast Charger",
+        price: 1499,
+        image: "https://images.unsplash.com/photo-1591290619762-c5884d1d0d7a?w=600"
+    },
+
+    {
+        name: "USB Type-C Cable",
+        description: "Fast Charging Cable",
+        price: 299,
+        image: "https://images.unsplash.com/photo-1587033411391-5d9e51cce126?w=600"
+    },
+
+    {
+        name: "Mobile Gaming Controller",
+        description: "Gaming Controller",
+        price: 2499,
+        image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600"
+    },
+
+    {
+        name: "Wireless Neckband",
+        description: "Bluetooth Neckband",
+        price: 1299,
+        image: "https://images.unsplash.com/photo-1578319439584-104c94d37305?w=600"
+    },
+
+    {
+        name: "Mobile Tripod",
+        description: "Adjustable Mobile Tripod",
+        price: 799,
+        image: "https://images.unsplash.com/photo-1606986628253-5e8f6b8a1d2e?w=600"
+    },
+
+    {
+        name: "Samsung Mobile Cover",
+        description: "Protective Mobile Cover",
+        price: 399,
+        image: "https://images.unsplash.com/photo-1601593346740-925612772716?w=600"
+    },
+
+    {
+        name: "iPhone Mobile Cover",
+        description: "Premium Phone Case",
+        price: 499,
+        image: "https://images.unsplash.com/photo-1603313011108-4b9f1f2b5a1f?w=600"
+    },
+
+    {
+        name: "Tempered Glass",
+        description: "Mobile Screen Protector",
+        price: 199,
+        image: "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600"
+    }
+
+];
+
+
+function displayProducts(list) {
+
+    const productList =
+        document.getElementById("productList");
+
+    productList.innerHTML = "";
+
+
+    if (list.length === 0) {
+
+        productList.innerHTML =
+            '<div class="no-products">No products found 😔</div>';
+
+        return;
+    }
+
+
+    list.forEach(function(product) {
+
+        const card = document.createElement("div");
+
+        card.className = "product-card";
+
+
+        const image = document.createElement("img");
+
+        image.src = product.image;
+        image.alt = product.name;
+
+
+        const name = document.createElement("h3");
+
+        name.textContent = product.name;
+
+
+        const description = document.createElement("p");
+
+        description.textContent = product.description;
+
+
+        const price = document.createElement("div");
+
+        price.className = "price";
+        price.textContent = "₹" + product.price;
+
+
+        const button = document.createElement("button");
+
+        button.className = "cart-btn";
+        button.textContent = "🛒 Add to Cart";
+
+        button.onclick = function() {
+
+            alert(product.name + " added to cart 🛒");
+
+        };
+
+
+        card.appendChild(image);
+        card.appendChild(name);
+        card.appendChild(description);
+        card.appendChild(price);
+        card.appendChild(button);
+
+
+        productList.appendChild(card);
+
+    });
+
+}
+
+
+function filterProducts() {
+
+    const searchText =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const priceFilter =
+        document.getElementById("priceFilter")
+        .value;
+
+
+    const filtered = products.filter(function(product) {
+
+        const searchMatch =
+            product.name.toLowerCase().includes(searchText) ||
+            product.description.toLowerCase().includes(searchText);
+
+
+        let priceMatch = true;
+
+
+        if (priceFilter === "under1000") {
+
+            priceMatch = product.price < 1000;
+
+        }
+
+
+        if (priceFilter === "1000plus") {
+
+            priceMatch = product.price >= 1000;
+
+        }
+
+
+        return searchMatch && priceMatch;
+
+    });
+
+
+    displayProducts(filtered);
+
+}
+
+
+displayProducts(products);
+
+</script>
+
+</body>
+</html>
